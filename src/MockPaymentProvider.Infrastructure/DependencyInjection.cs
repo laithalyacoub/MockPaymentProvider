@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using MockPaymentProvider.Infrastructure.Security;
+using MockPaymentProvider.Application.Payments;
+using MockPaymentProvider.Application.Auth;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MockPaymentProvider.Infrastructure.Persistence;
@@ -15,7 +18,8 @@ public static class DependencyInjection
                 configuration.GetConnectionString("Default"),
                 sql => sql.EnableRetryOnFailure()));
 
-        // Section 8 adds the repository registration here.
+        services.AddScoped<IPaymentRepository, PaymentRepository>();
+        services.AddSingleton<ITokenService, TokenService>();
         return services;
     }
 }
