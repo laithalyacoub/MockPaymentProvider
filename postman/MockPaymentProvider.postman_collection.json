@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "5506ac65-465a-4d8e-9157-5206f4e5c9e4",
+    "_postman_id": "cc646ab3-1c05-42d5-869a-0f2f39ca310a",
     "name": "Mock Payment Provider",
     "description": "Fake development values only. Safe to share.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -20,7 +20,15 @@
               }
             ],
             "url": {
-              "raw": "{{providerUrl}}/api/auth/token"
+              "raw": "{{providerUrl}}/api/auth/token",
+              "host": [
+                "{{providerUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "token"
+              ]
             },
             "body": {
               "mode": "raw",
@@ -57,7 +65,15 @@
               }
             ],
             "url": {
-              "raw": "{{providerUrl}}/api/auth/token"
+              "raw": "{{providerUrl}}/api/auth/token",
+              "host": [
+                "{{providerUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "token"
+              ]
             },
             "body": {
               "mode": "raw",
@@ -94,7 +110,15 @@
               }
             ],
             "url": {
-              "raw": "{{providerUrl}}/api/auth/token"
+              "raw": "{{providerUrl}}/api/auth/token",
+              "host": [
+                "{{providerUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "token"
+              ]
             },
             "body": {
               "mode": "raw",
@@ -131,7 +155,15 @@
               }
             ],
             "url": {
-              "raw": "{{providerUrl}}/api/payments/process"
+              "raw": "{{providerUrl}}/api/payments/process",
+              "host": [
+                "{{providerUrl}}"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "process"
+              ]
             },
             "body": {
               "mode": "raw",
@@ -172,7 +204,15 @@
               }
             ],
             "url": {
-              "raw": "{{providerUrl}}/api/payments/process"
+              "raw": "{{providerUrl}}/api/payments/process",
+              "host": [
+                "{{providerUrl}}"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "process"
+              ]
             },
             "body": {
               "mode": "raw",
@@ -209,7 +249,15 @@
               }
             ],
             "url": {
-              "raw": "{{providerUrl}}/api/payments/process"
+              "raw": "{{providerUrl}}/api/payments/process",
+              "host": [
+                "{{providerUrl}}"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "process"
+              ]
             },
             "body": {
               "mode": "raw",
@@ -258,7 +306,15 @@
               }
             ],
             "url": {
-              "raw": "{{providerUrl}}/api/payments/process"
+              "raw": "{{providerUrl}}/api/payments/process",
+              "host": [
+                "{{providerUrl}}"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "process"
+              ]
             },
             "body": {
               "mode": "raw",
@@ -293,7 +349,15 @@
               }
             ],
             "url": {
-              "raw": "{{providerUrl}}/api/payments/process"
+              "raw": "{{providerUrl}}/api/payments/process",
+              "host": [
+                "{{providerUrl}}"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "process"
+              ]
             },
             "body": {
               "mode": "raw",
@@ -323,7 +387,15 @@
               }
             ],
             "url": {
-              "raw": "{{providerUrl}}/api/payments/{{idemId}}"
+              "raw": "{{providerUrl}}/api/payments/{{idemId}}",
+              "host": [
+                "{{providerUrl}}"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "{{idemId}}"
+              ]
             }
           },
           "event": [
@@ -349,7 +421,15 @@
               }
             ],
             "url": {
-              "raw": "{{providerUrl}}/api/payments/TXN-404404"
+              "raw": "{{providerUrl}}/api/payments/TXN-404404",
+              "host": [
+                "{{providerUrl}}"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "TXN-404404"
+              ]
             }
           },
           "event": [
