@@ -1,0 +1,419 @@
+{
+  "info": {
+    "_postman_id": "5506ac65-465a-4d8e-9157-5206f4e5c9e4",
+    "name": "Mock Payment Provider",
+    "description": "Fake development values only. Safe to share.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Provider security and payments",
+      "item": [
+        {
+          "name": "16a Token without X-Api-Key (expect 401)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{providerUrl}}/api/auth/token"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"clientId\": \"{{clientId}}\", \"clientSecret\": \"{{clientSecret}}\"}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"401\", () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "16b Token with wrong X-Api-Key (expect 401)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "wrong-key"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{providerUrl}}/api/auth/token"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"clientId\": \"{{clientId}}\", \"clientSecret\": \"{{clientSecret}}\"}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"401\", () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "17 Right key, wrong clientSecret (expect 401)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{providerApiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{providerUrl}}/api/auth/token"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"clientId\": \"{{clientId}}\", \"clientSecret\": \"wrong-secret\"}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"401\", () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "18 Process without Authorization header (expect 401)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{providerApiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{providerUrl}}/api/payments/process"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"transactionId\": \"TXN-18000\", \"mobileNumber\": \"0791234567\", \"amount\": 5}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"401\", () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "19 Process with a fake token (expect 401)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{providerApiKey}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer abc.def.ghi"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{providerUrl}}/api/payments/process"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"transactionId\": \"TXN-19000\", \"mobileNumber\": \"0791234567\", \"amount\": 5}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"401\", () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "21a Process (first time, expect 200)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{providerApiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{providerUrl}}/api/payments/process"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"transactionId\": \"{{idemId}}\", \"mobileNumber\": \"0791234567\", \"amount\": 5}"
+            },
+            "description": "Scenario 20 (an expired token) is manual: set Security:TokenLifetimeSeconds to 10, wait 11 seconds, then send this request with the old token."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set(\"idemId\", \"TXN-\" + Date.now().toString().slice(-9));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"SUCCESS with reference\", () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.status).to.eql(\"SUCCESS\");",
+                  "  pm.environment.set(\"idemRef\", body.paymentReference);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "21b Process again, same id and body (expect 200, same reference)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{providerApiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{providerUrl}}/api/payments/process"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"transactionId\": \"{{idemId}}\", \"mobileNumber\": \"0791234567\", \"amount\": 5}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"same reference as before\", () => pm.expect(pm.response.json().paymentReference).to.eql(pm.environment.get(\"idemRef\")));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "22 Same id, different amount (expect 409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{providerApiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{providerUrl}}/api/payments/process"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"transactionId\": \"{{idemId}}\", \"mobileNumber\": \"0791234567\", \"amount\": 6}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"409\", () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "23a Status inquiry, existing payment (expect 200)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{providerApiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{providerUrl}}/api/payments/{{idemId}}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "23b Status inquiry, unknown id (expect 404)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Api-Key",
+                "value": "{{providerApiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{providerUrl}}/api/payments/TXN-404404"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"404\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Calls the provider directly (port 5100). Fake development values only.",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{accessToken}}",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const expiresAt = Number(pm.environment.get(\"tokenExpiresAt\") || 0);",
+              "",
+              "if (Date.now() >= expiresAt) {",
+              "  pm.sendRequest({",
+              "    url: pm.environment.get(\"providerUrl\") + \"/api/auth/token\",",
+              "    method: \"POST\",",
+              "    header: {",
+              "      \"Content-Type\": \"application/json\",",
+              "      \"X-Api-Key\": pm.environment.get(\"providerApiKey\")",
+              "    },",
+              "    body: {",
+              "      mode: \"raw\",",
+              "      raw: JSON.stringify({",
+              "        clientId: pm.environment.get(\"clientId\"),",
+              "        clientSecret: pm.environment.get(\"clientSecret\")",
+              "      })",
+              "    }",
+              "  }, (error, response) => {",
+              "    if (error || response.code !== 200) {",
+              "      console.error(\"Could not get a token\");",
+              "      return;",
+              "    }",
+              "    const body = response.json();",
+              "    pm.environment.set(\"accessToken\", body.accessToken);",
+              "    // renew 30 seconds before it expires, the same rule the Zain API uses",
+              "    pm.environment.set(\"tokenExpiresAt\", Date.now() + (body.expiresInSeconds - 30) * 1000);",
+              "  });",
+              "}"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
